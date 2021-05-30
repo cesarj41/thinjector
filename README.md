@@ -40,25 +40,8 @@ export const container =
   createServiceContainer<IServices>(services);
 ```
 
-And now lets configure the service container provider at the root of your React app, normally App.tsx
+And ... that's it !, you can start accessing your services on your react components.
 
-```typescript
-import React from "react"
-import container from "./services"
-
-const { ServiceProvider } = container;
-
-const App = () => {
-  return (
-    <ServiceProvider>
-      {/* Your app.... */}
-    </ServiceProvider>
-  );
-};
-
-export default App;
-```
-And ... that's it, you can start accessing your services any part down the tree !.
 ## Injecting services examples
 ### Using useService hook !
 ```typescript
@@ -123,3 +106,6 @@ export default inject(DemoPage, (services) => ({
     login: services.userService.login
 }));
 ```
+## TODO :
+- Accessing services from within services.
+- Make agnostic for any js framework or library.

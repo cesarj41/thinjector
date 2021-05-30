@@ -1,30 +1,17 @@
-import { createContext, useContext, createElement, ReactNode, ComponentType } from 'react'
+import { createElement, ComponentType } from 'react'
 
 export function createServiceContainer<T>(services: T) {
-  const TServiceContext = createContext<T | undefined>(undefined)
-  const useService = () => {
-    const context = useContext(TServiceContext)
-    if (context === undefined) {
-      throw new Error('useService must be used within a ServiceProvider')
-    }
-    return context
-  }
   return {
-    useService,
-    ServiceProvider: ({ children }: { children?: ReactNode }) => {
-      return createElement(TServiceContext.Provider, {
-        value: services,
-        children,
-      })
+    useService: () => {
+      return services;
     },
     withService: <P extends { service: T }>(WrappedComponent: ComponentType<P>) => {
       const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
       const ComponentWithService = (props: Omit<P, 'service'>) => {
-        const service = useService()
         return createElement(WrappedComponent, {
           ...props,
-          service,
+          service: services,
         } as P)
       }
 
@@ -39,8 +26,6 @@ export function createServiceContainer<T>(services: T) {
       const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
       const ComponentWithInject = (props: Omit<P, keyof Exclude>) => {
-        const services = useService()
-
         return createElement(WrappedComponent, {
           ...props,
           ...inject(services),
