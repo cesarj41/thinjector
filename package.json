@@ -5,7 +5,7 @@
   "keywords": [],
   "main": "dist/thinjector.umd.js",
   "module": "dist/thinjector.es5.js",
-  "typings": "dist/types/thinjector.d.ts",
+  "types": "dist/types/thinjector.d.ts",
   "files": [
     "dist"
   ],
