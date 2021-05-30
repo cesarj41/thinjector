@@ -6,7 +6,6 @@ Minimalistic, super lightweight React service injection container extremely easy
 It's important to decouple your ui components from your services (fetching logic, biz logic, etc..) but the solutions out there are either using heavy weight state management tools (redux + redux saga, mobx, recoil, etc..) or full fledge dependency containers (inversifyjs, 
 tsyringe) which for a lot of use cases are overkill so looking for lightweight solutions the ones I found which are awesome but didn't feel comfortable with the api, so I came with this very small solution.
 ### Features
-- Uses React context to inject services so no other depedencies.
 - Built with Typescript.
 - A hook for accessing services.
 
