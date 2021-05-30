@@ -100,7 +100,7 @@ const DemoPage = ({service}: Props) => {
 
 export default withService(DemoPage);
 ```
-Don't like the idea of injecting all services and prefer a solution to specify which services or functions you want like a redux mapToProps thing ? don't say no more:
+Don't like the idea of injecting all services and prefer a solution to specify which services or functions you want like a redux mapToProps thing ? say no more:
 ### Using inject HOC !
 ```typescript
 import React from "react"
