@@ -1,6 +1,6 @@
 {
   "name": "thinjector",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
   "main": "dist/thinjector.umd.js",
