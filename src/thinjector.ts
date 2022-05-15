@@ -1,7 +1,7 @@
-import { createContext, useContext, createElement, ReactNode, ComponentType } from 'react'
+import { ComponentType, ReactNode, createContext, createElement, useContext } from 'react'
 
 export function createServiceContainer<T>(services: T) {
-  const TServiceContext = createContext<T | undefined>(undefined)
+  const TServiceContext = createContext<T>(services)
   const useService = () => {
     const context = useContext(TServiceContext)
     if (context === undefined) {
@@ -11,20 +11,21 @@ export function createServiceContainer<T>(services: T) {
   }
   return {
     useService,
-    ServiceProvider: ({ children }: { children?: ReactNode }) => {
+    ServiceProvider: ({ children, partial }: { children?: ReactNode, partial?: Partial<T> }) => {
       return createElement(TServiceContext.Provider, {
-        value: services,
+        value: partial as T || services,
         children,
       })
+
     },
-    withService: <P extends { service: T }>(WrappedComponent: ComponentType<P>) => {
+    withService: <P extends { services: T }>(WrappedComponent: ComponentType<P>) => {
       const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
-      const ComponentWithService = (props: Omit<P, 'service'>) => {
-        const service = useService()
+      const ComponentWithService = (props: Omit<P, 'services'>) => {
+        const services = useService()
         return createElement(WrappedComponent, {
           ...props,
-          service,
+          services,
         } as P)
       }
 
