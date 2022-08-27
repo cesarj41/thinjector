@@ -17,35 +17,32 @@ npm install thinjector
 
 ### Usage
 
-Set up your service container, create the file where you wish in your project folder structure, I will put it on services/index.ts.
+Set up your service container, create the file where you wish in your project folder structure, I will put it on src/services.ts in my react app
 ```typescript
 import { createServiceContainer } from 'thinjector'
 
 // Service structure is up to you, this is just a simple example
-interface UserService {
-    login: VoidFunction
-}
-export interface IServices {
-    userService: UserService
+
+export interface Service {
+    login: () => console.log('signing in....');
+    logoout: VoidFunction;
+    ...
+} 
+
+const services: Service = {
+    login: () => console.log('signing in....'),
+    logoutL () => console.log('signing out...')
 }
 
-const services: IServices = {
-    userService: {
-        login: () => console.log('signing in....'),
-    }
-}
-
-export const container =
-  createServiceContainer<IServices>(services);
+export const { ServiceProvider, useService, withService, inject } =
+  createServiceContainer<Service>(services);
 ```
 
 And now lets configure the service container provider at the root of your React app, normally App.tsx
 
 ```typescript
 import React from "react"
-import container from "./services"
-
-const { ServiceProvider } = container;
+import { ServiceProvider } from "./services"
 
 const App = () => {
   return (
@@ -62,14 +59,12 @@ And ... that's it, you can start accessing your services any part down the tree 
 ### Using useService hook !
 ```typescript
 import React from "react"
-import container from "./services"
-
-const { useService } = container;
+import { useService } from "./services"
 
 const DemoPage = () => {
-  const { userService } = useService(); // WoW, just like that
+  const { login } = useService(); // WoW, just like that
   return (
-    <div onClick={() => userService.login()}>
+    <div onClick={login}>
       Demo Page
     </div>
   );
@@ -82,16 +77,14 @@ Not a hook fan ? still using class components ?, don't worry, we got you covered
 ### Using withService HOC !
 ```typescript
 import React from "react"
-import container, {IServices} from "./services"
-
-const { withService } = container;
+import { withService, Service } from "./services"
 
 type Props = {
-    service: IServices
+    service: Service
 }
-const DemoPage = ({service}: Props) => {
+const DemoPage = ({ service }: Props) => {
   return (
-    <div onClick={() => service.userService.login()}>
+    <div onClick={service.login}>
       Demo Page
     </div>
   );
@@ -103,22 +96,20 @@ Don't like the idea of injecting all services and prefer a solution to specify w
 ### Using inject HOC !
 ```typescript
 import React from "react"
-import container, {IServices} from "./services"
-
-const { inject } = container;
+import { Service, inject } from "./services"
 
 type Props = {
-    login: IServices['userService']['login']
+    login: Service['login']
 }
-const DemoPage = ({login}: Props) => {
+const DemoPage = ({ login }: Props) => {
   return (
-    <div onClick={() => login()}>
+    <div onClick={login}>
       Demo Page
     </div>
   );
 };
 
-export default inject(DemoPage, (services) => ({
-    login: services.userService.login
+export default inject(DemoPage, (service) => ({
+    login: service.login
 }));
 ```
