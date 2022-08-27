@@ -31,7 +31,7 @@ export interface Service {
 
 const services: Service = {
     login: () => console.log('signing in....'),
-    logoutL () => console.log('signing out...')
+    logout: () => console.log('signing out...')
 }
 
 export const { ServiceProvider, useService, withService, inject } =
