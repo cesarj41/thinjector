@@ -24,7 +24,7 @@ import { createServiceContainer } from 'thinjector'
 // Service structure is up to you, this is just a simple example
 
 export interface Service {
-    login: () => console.log('signing in....');
+    login: (username: string, password: string) => void;
     logoout: VoidFunction;
     ...
 } 
